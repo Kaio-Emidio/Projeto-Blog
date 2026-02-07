@@ -1,0 +1,55 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `blog_terraria` DEFAULT CHARACTER SET utf8;
+USE `blog_terraria`;
+
+CREATE TABLE IF NOT EXISTS `Categorias` (
+  `ID_Categoria` INT NOT NULL AUTO_INCREMENT,
+  `Nome` VARCHAR(50) NOT NULL,
+  `Descricao` TEXT NULL,
+  PRIMARY KEY (`ID_Categoria`),
+  UNIQUE INDEX `Nome_UNIQUE` (`Nome`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Autores` (
+  `ID_Autor` INT NOT NULL AUTO_INCREMENT,
+  `Nome` VARCHAR(100) NOT NULL,
+  `Email` VARCHAR(150) NOT NULL,
+  `Bio` TEXT NULL,
+  `Senha_cripto` VARCHAR(255) NOT NULL,
+  `Data_Criacao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID_Autor`),
+  UNIQUE INDEX `Email_UNIQUE` (`Email`),
+  UNIQUE INDEX `Nome_UNIQUE` (`Nome`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Posts` (
+  `ID_Post` INT NOT NULL AUTO_INCREMENT,
+  `Titulo` VARCHAR(200) NOT NULL,
+  `Slug` VARCHAR(200) NOT NULL,
+  `Conteudo` TEXT NOT NULL,
+  `ID_Categoria` INT NOT NULL,
+  `ID_Autor` INT NOT NULL,
+  `Data_Publicacao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `Visualizacoes` INT DEFAULT 0,
+  `Status` ENUM('Rascunho', 'Publicado', 'Arquivado') DEFAULT 'Rascunho',
+  PRIMARY KEY (`ID_Post`),
+  UNIQUE INDEX `Slug_UNIQUE` (`Slug`),
+  INDEX `fk_Categorias_idx` (`ID_Categoria`),
+  INDEX `fk_Autor_idx` (`ID_Autor`),
+  CONSTRAINT `fk_Categoria`
+    FOREIGN KEY (`ID_Categoria`) REFERENCES `Categorias` (`ID_Categoria`),
+  CONSTRAINT `fk_Autor`
+    FOREIGN KEY (`ID_Autor`) REFERENCES `Autores` (`ID_Autor`)
+    ON DELETE RESTRICT ON UPDATE CASCADE,
+  FULLTEXT (`Titulo`, `Conteudo`),
+  INDEX `idx_post_autor` (`ID_Autor`),
+  INDEX `idx_data` (`Data_Publicacao`),
+  INDEX `idx_categoria_data` (`ID_Categoria`, `Data_Publicacao`)
+) ENGINE=InnoDB;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
