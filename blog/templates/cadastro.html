@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro{% endblock %}
+{% block conteudo %}
+<h1>Cadastro de Usuário</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="nome" class="form-label"><strong>Nome de usuário</strong></label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu nome de usuário aqui" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"><strong>Email</strong></label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="nome@exemplo.com" required>
+    </div>
+    <div class="mb-3">
+        <label for="senha" class="form-label"><strong>Senha</strong></label>
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Sua senha aqui" required>
+    </div>
+    <div class="mb-3">
+        <label for="conf_senha" class="form-label"><strong>Confirmar senha</strong></label>
+        <input type="password" class="form-control" id="conf_senha" name="conf_senha" placeholder="Confirme sua senha" required>
+    </div>
+    <div class="mb-3">
+        <label for="bio" class="form-label"><strong>Bio</strong></label>
+        <textarea type="text" class="form-control" id="bio" name="bio" placeholder="Escreva um pouco sobre você!"></textarea>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Cadastrar usuário</button>
+    </div>
+</form>
+
+<script>
+    document.querySelector("form").addEventListener("submit", e => {
+        if (senha.value !== conf_senha.value) {
+            alert("As senhas não coincidem");
+            e.preventDefault();
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Inicio{% endblock %}
+{% block conteudo %}
+<h1 class="mb-4">Posts Recentes</h1>
+
+{% for post in posts %}
+<div class="card mb-4 shadow-sm post-card">
+  <div class="card-body">
+    <h4 class="card-title">{{ post.Titulo }}</h4>
+    <p class="card-text text-muted mb-2">
+      {{ post.Categoria }} • {{ post.Autor }} • {{ post.Data_Publicacao }}
+    </p>
+    <p class="card-text text-muted">
+      {{ post.Conteudo[:250] }}...
+    </p>
+    <div class="text-end">
+      <a href="/post/{{ post.Slug }}" class="btn btn-primary">Ler mais</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<a href="/criar" 
+   class="btn rounded-circle position-fixed bottom-0 end-0 m-4 d-flex align-items-center justify-content-center botaocriar">
+  <i class="fa-solid fa-plus"></i>
+</a>
+
+<script>
+      const input = document.getElementById("busca");
+      const cards = document.querySelectorAll(".post-card");
+
+      input.addEventListener("input", () => {
+        const termo = input.value.toLowerCase();
+
+        cards.forEach(card => {
+          const texto = card.innerText.toLowerCase();
+          card.style.display = texto.includes(termo) ? "block" : "none";
+        });
+      });
+      </script>
+
+{% endblock %}

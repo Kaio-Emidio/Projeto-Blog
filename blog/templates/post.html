@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}{{ post.Titulo }}{% endblock %}
+{% block conteudo %}
+
+<div class="container mt-4">
+
+  <h1 class="mb-2">{{ post.Titulo }}</h1>
+
+  <p class="mb-4">
+    {{ post.Categoria }} • {{ post.Autor }} • {{ post.Data_Publicacao }}
+  </p>
+
+  <div class="fs-5 mb-5">
+    {{ post.Conteudo | safe }}
+  </div>
+
+  <hr>
+
+  <!-- AUTOR -->
+  <div class="mt-4">
+    <h5>Sobre o autor</h5>
+    <p class="mb-0"><strong>{{ post.Autor }}</strong></p>
+    <p class="text-muted">{{ post.Bio }}</p>
+  </div>
+
+  <a href="/" class="btn btn-secondary mt-4">← Voltar</a>
+
+</div>
+
+{% endblock %}
